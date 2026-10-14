@@ -18,12 +18,14 @@ make keycloak-up
 MCP_SKILLS_DIR=docs/examples/skills MCP_POLICY_FILE=docs/examples/skill-policy.yaml go run ./cmd/mcpskills
 ```
 
-To see attributed usage traces locally instead, run `make demo-otel` with
+To see attributed usage traces and file-read counts locally instead, run `make demo-otel` with
 Keycloak running. This installs [OTel Desktop Viewer](https://github.com/CtrlSpice/otel-desktop-viewer)
 into the gitignored `_bin/` directory if needed (or use `make otel-install` to
 install it separately) and starts the viewer and this demo server together; open
-http://localhost:8000/traces and make a Skills request to see its span. It
-exports traces over OTLP/HTTP to `http://localhost:4318/v1/traces`. Stop both
+http://localhost:8000/traces to see request spans. Read a skill's `SKILL.md` or
+supporting file, then open http://localhost:8000/metrics to see the
+`mcpskills.resource.reads` counter (periodic export may take up to a minute).
+It exports both signals over OTLP/HTTP to `http://localhost:4318`. Stop both
 processes with Ctrl-C. Building the viewer requires Go with CGO enabled and a
 C compiler.
 

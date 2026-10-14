@@ -11,6 +11,7 @@ import (
 	"github.com/Cali0707/mcpskills/internal/policy"
 	"github.com/modelcontextprotocol/go-sdk/mcp"
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/metric"
 	"go.opentelemetry.io/otel/trace"
 )
 
@@ -121,6 +122,15 @@ func (a *accessControl) middleware(next mcp.MethodHandler) mcp.MethodHandler {
 		}
 		result, err := a.handleMethod(ctx, method, req, next)
 		if a.telemetry != nil {
+			if method == "resources/read" && err == nil && a.telemetry.readCounter != nil {
+				if skillURI, ownerErr := a.source.ResourceSkill(uri); ownerErr == nil {
+					a.telemetry.readCounter.Add(ctx, 1, metric.WithAttributes(
+						attribute.String("mcp.skill.uri", skillURI),
+						attribute.String("mcp.resource.uri", uri),
+						attribute.String("skill.source.revision", a.source.Revision()),
+					))
+				}
+			}
 			// The outcome is based on the policy, independently of whether the
 			// response uses an indistinguishable not-found protocol error.
 			allowed := true

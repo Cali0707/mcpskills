@@ -26,9 +26,9 @@ demo-otel: otel-install
 			if [ "$$attempt" -ge 30 ]; then printf '%s\n' 'OTel Desktop Viewer did not become ready.' >&2; exit 1; fi; \
 			sleep 1; \
 		done; \
-		printf 'OTel Desktop Viewer: %s\nMCP server: %s\n' 'http://localhost:8000/traces' "$${MCP_RESOURCE_URL:-http://localhost:8080/mcp}"; \
+		printf 'OTel traces: %s\nOTel metrics: %s\nMCP server: %s\n' 'http://localhost:8000/traces' 'http://localhost:8000/metrics' "$${MCP_RESOURCE_URL:-http://localhost:8080/mcp}"; \
 		MCP_SKILLS_DIR=docs/examples/skills MCP_POLICY_FILE=docs/examples/skill-policy.yaml \
-			OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=http://localhost:4318/v1/traces go run ./cmd/mcpskills
+			OTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 go run ./cmd/mcpskills
 
 keycloak-up:
 	@test -n "$(CONTAINER_ENGINE)" || { printf '%s\n' 'Start Podman or Docker, or set CONTAINER_ENGINE.' >&2; exit 1; }
