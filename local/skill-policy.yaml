@@ -1,0 +1,4 @@
+skills:
+  "skill://toolbox/nested-tool/SKILL.md":
+    anyGroup:
+      - engineering

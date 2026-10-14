@@ -1,0 +1,9 @@
+# Unlisted skills (launch-brief) are visible to every authenticated user.
+# These names match the groups claim in local/keycloak/mcpskills-local-realm.json.
+skills:
+  "skill://launch-brief/engineering-rollout/SKILL.md":
+    anyGroup: [engineering]
+  "skill://incident-triage/SKILL.md":
+    anyGroup: [engineering]
+  "skill://customer-update/SKILL.md":
+    anyGroup: [sales]
